@@ -13,6 +13,8 @@ h1 {
   color: #333;
 }
 
+
+/* - - - - - Input Section - - - - - */
 .input-section {
   margin: 20px 0;
 }
@@ -67,6 +69,7 @@ h1 {
 .input-feedback.invalid {
   color: red;
 }
+/* - - - - - - - - - - - - - - - - - - - -  */
 
 .error {
   color: red;
@@ -76,3 +79,32 @@ h1 {
 .grid {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+
+/* - - - - - Animation - - - - -  */
+.animation-controls {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.animation-controls button {
+  margin: 0 10px;
+  padding: 10px;
+  background: #61dafb;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.animation-controls button:hover {
+  background: #21a1f1;
+}
+
+.animation-controls button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+/* - - - - - - - - - - - - - - - - - - - -  */

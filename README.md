@@ -17,7 +17,7 @@ This is a **work-in-progress (WIP)** initial commit. The core functionality work
 
 ## Screenshot
 
-![8-Puzzle Solver in Action](screenshots/index2025-03-25.png)
+![8-Puzzle Solver in Action](screenshots/index2025-03-26.png)
 
 ## Setup
 
