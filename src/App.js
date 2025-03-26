@@ -7,7 +7,7 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import PuzzleGrid from './components/PuzzleGrid';
 import SolverPanel from './components/SolverPanel';
-import { isSolvable, generateRandomState } from './utils/puzzleUtils';
+import { generateRandomState } from './utils/puzzleUtils';
 import { FaPlay, FaPause, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 
 function App() {
@@ -24,6 +24,7 @@ function App() {
   const [currentStep, setCurrentStep] = useState(-1);
   const [isPlaying, setIsPlaying] = useState(false);
   const [intervalId, setIntervalId] = useState(null);
+  const [hasStats, setHasStats] = useState(false);
 
   useEffect(() => {
     console.log('Loading WebAssembly module...');
@@ -88,6 +89,7 @@ function App() {
     setError(null);
     setSolution({ path: '', stats: null });
     setCurrentStep(-1); // Reset animation
+    setHasStats(false);
     try {
       const statsPtr = wasmModule.malloc(4 * 4);
       let pathPtr =
@@ -104,7 +106,7 @@ function App() {
       wasmModule.free(statsPtr);
       wasmModule.freeMemory(pathPtr);
 
-      setSolution({
+      const newSolution = {
         path,
         stats: {
           pathLength: statsValues[0],
@@ -112,8 +114,10 @@ function App() {
           maxQLength: statsValues[2],
           time: statsValues[3],
         },
-      });
+      };
 
+      setSolution(newSolution);
+      setHasStats(true);
       if (path) {
         setSolutionPath(path);
         setIsPlaying(true);
@@ -176,6 +180,7 @@ function App() {
     setSolutionPath('');
     setCurrentStep(-1);
     setIsPlaying(false);
+    setHasStats(false);
     if (intervalId) {
         clearInterval(intervalId);
         setIntervalId(null);
@@ -189,6 +194,7 @@ function App() {
       setSolutionPath('');
       setCurrentStep(-1);
       setIsPlaying(false);
+      setHasStats(false);
       if (intervalId) {
         clearInterval(intervalId);
         setIntervalId(null);
@@ -226,6 +232,7 @@ function App() {
   return (
     <div className="App">
       <h1>8 Puzzle Solver</h1>
+      <p className="subtitle">Solve the 8-Puzzle with AI-Powered Algorithms</p>
       <p>Enter a puzzle state using digits 0-8, select a method, and click Solve to find a solution.</p>
       {error && (
         <div className="error">
@@ -233,26 +240,28 @@ function App() {
           <button onClick={() => setError(null)}>×</button>
         </div>
       )}
-      <div className="input-section">
-        <label>
-          Initial State:
-          <input
-            type="text"
-            value={customState}
-            onChange={handleInputChange}
-            maxLength="9"
-            placeholder="e.g., 208135467"
-            className={inputValid ? 'valid' : 'invalid'}
-          />
-        </label>
-        <button onClick={handleCustomState} disabled={!inputValid}>
-          Set State
-        </button>
-        <button onClick={handleRandomize}>Randomize</button>
-        <div className={`input-feedback ${inputValid ? 'valid' : 'invalid'}`}>
-          {inputFeedback}
-        </div>
-      </div>
+     <div className="input-section">
+       <div className="input-group">
+         <label className="input-label">
+           Initial State:
+         </label>
+         <input
+           type="text"
+           value={customState}
+           onChange={handleInputChange}
+           maxLength="9"
+           placeholder="e.g., 208135467"
+           className={inputValid ? 'valid' : 'invalid'}
+         />
+         <button onClick={handleCustomState} disabled={!inputValid}>
+           Set State
+         </button>
+         <button onClick={handleRandomize}>Randomize</button>
+       </div>
+       <div className={`input-feedback ${inputValid ? 'valid' : 'invalid'}`}>
+         {inputFeedback}
+       </div>
+     </div>
 
       <PuzzleGrid state={puzzleState} />
       <div className="animation-controls">
@@ -267,7 +276,7 @@ function App() {
         </button>
       </div>
       <div className="solver-controls">
-        <SolverPanel onSolve={solvePuzzle} solution={solution} isSolving={isSolving} />
+        <SolverPanel onSolve={solvePuzzle} solution={solution} isSolving={isSolving} hasStats={hasStats} />
       </div>
     </div>
   );

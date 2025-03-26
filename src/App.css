@@ -5,79 +5,155 @@
 
 .App {
   text-align: center;
-  padding: 20px;
-  font-family: Arial, sans-serif;
+  padding: 40px 20px;
+  font-family: 'Source Sans Pro', sans-serif;
+  background: linear-gradient(to top, #0a3d62 0%, #3e92cc 75%);
+  min-height: 100vh;
+  color: #e4faf8;
 }
 
 h1 {
-  color: #333;
+  font-size: 5em;
+  font-weight: 700;
+  color: #e4faf8;
+  text-shadow: 0 0 6px #093b3f;
+  margin-bottom: 10px;
+}
+
+p {
+    font-size: 1.5em;
+}
+
+.subtitle {
+  font-size: 2em;
+  font-weight: 400;
+  color: #e4faf8;
+  margin-bottom: 20px;
 }
 
 
 /* - - - - - Input Section - - - - - */
 .input-section {
   margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
 
-.input-section label {
-  margin-right: 10px;
+.input-group {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.input-label {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #e4faf8;
+  text-shadow: 0 0 4px #093b3f;
 }
 
 .input-section input {
-  padding: 5px;
+  padding: 10px;
   font-size: 16px;
   width: 150px;
+  background: #1f2833;
+  color: #c5c6c7;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+}
+
+.input-section input::placeholder {
+  color: #6b7280;
+  opacity: 0.8;
+}
+
+.input-section input:focus {
+  outline: none;
+  background: #2a3436;
+  box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.7);
+}
+
+
+
+.input-section input.invalid {
+  border: 2px solid #f87171; /* Red for invalid */
 }
 
 .input-section button {
-  padding: 5px 10px;
-  background: #61dafb;
+  padding: 10px 20px;
+  width: 120px;
+  background: #1f2833;
+  color: #c5c6c7;
   border: none;
-  border-radius: 5px;
-  color: white;
+  border-radius: 15px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
   cursor: pointer;
-  margin-left: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  transition: all 0.3s ease;
 }
 
 .input-section button:hover {
-  background: #21a1f1;
+  background: #3a4446;
+  color: #c5c6c7;
+  scale: 1.05;
 }
 
 .input-section button:disabled {
-  background: #ccc;
+  background: #1f2833;
+  color: #c5c6c7;
+  opacity: 0.5;
   cursor: not-allowed;
-}
-
-.input-section input.valid {
-  border: 2px solid green;
-}
-
-.input-section input.invalid {
-  border: 2px solid red;
+  scale: 1;
 }
 
 .input-feedback {
-  font-size: 14px;
+  font-size: 1.2em;
   margin-top: 5px;
-  height: 20px;
+  min-height: 20px;
+  color: #e4faf8;
 }
 
 .input-feedback.valid {
-  color: green;
+  color: #4ade80; /* Green for valid */
 }
 
 .input-feedback.invalid {
-  color: red;
+  color: #f87171; /* Red for invalid */
 }
-/* - - - - - - - - - - - - - - - - - - - -  */
+/* - - - - - - - - - - - - - - - - - - - - */
 
 .error {
-  color: red;
+  color: #ff6b6b; /* Softer red */
+  background: rgba(255, 255, 255, 0.1);
+  padding: 10px;
+  border-radius: 5px;
   margin: 10px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.error button {
+  background: none;
+  border: none;
+  color: #c5c6c7;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.error button:hover {
+  color: #ff6b6b;
 }
 
 .grid {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
 }
 
 
@@ -90,21 +166,28 @@ h1 {
 
 .animation-controls button {
   margin: 0 10px;
-  padding: 10px;
-  background: #61dafb;
+  padding: 10px 15px;
+  width: 60px;
+  background: #1f2833;
+  color: #c5c6c7;
   border: none;
-  border-radius: 5px;
-  color: white;
+  border-radius: 15px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
   cursor: pointer;
   font-size: 16px;
+  transition: all 0.3s ease;
 }
 
 .animation-controls button:hover {
-  background: #21a1f1;
+  background: #3a4446;
+  color: #c5c6c7;
+  scale: 1.05;
 }
-
 .animation-controls button:disabled {
-  background: #ccc;
+  background: #1f2833;
+  color: #c5c6c7;
+  opacity: 0.5;
   cursor: not-allowed;
+  scale: 1;
 }
 /* - - - - - - - - - - - - - - - - - - - -  */
