@@ -7,6 +7,7 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import PuzzleGrid from './components/PuzzleGrid';
 import SolverPanel from './components/SolverPanel';
+import { isSolvable, generateRandomState } from './utils/puzzleUtils';
 
 function App() {
   const [wasmModule, setWasmModule] = useState(null);
@@ -17,6 +18,7 @@ function App() {
   const [isSolving, setIsSolving] = useState(false);
   const [error, setError] = useState(null);
   const [inputValid, setInputValid] = useState(true);
+  const [inputFeedback, setInputFeedback] = useState('');
 
   useEffect(() => {
     console.log('Loading WebAssembly module...');
@@ -42,6 +44,9 @@ function App() {
     });
   }, []);
 
+  /**
+   * Check if a puzzle state is solvable by counting inversions
+   */
   const solvePuzzle = async (method, heuristic) => {
     if (!wasmModule) {
       setError('WebAssembly module not loaded yet.');
@@ -105,33 +110,49 @@ function App() {
     }
   };
 
-  const moveTile = (state, offset) => {
-    const blankIdx = state.indexOf('0');
-    const newIdx = blankIdx + offset;
-    if (newIdx < 0 || newIdx > 8 || (offset === 1 && blankIdx % 3 === 2) || (offset === -1 && blankIdx % 3 === 0)) return state;
-    const arr = state.split('');
-    [arr[blankIdx], arr[newIdx]] = [arr[newIdx], arr[blankIdx]];
-    return arr.join('');
-  };
+
+  const handleRandomize = () => {
+    const newState = generateRandomState();
+    setCustomState(newState);
+    setPuzzleState(newState);
+    setInputValid(true);
+    setInputFeedback('');
+    setError(null);
+  }
+
+
 
   const handleCustomState = () => {
-    if (/^[0-8]{9}$/.test(customState) && new Set(customState).size === 9) {
-      setPuzzleState(customState);
-      setError(null);
-      setInputValid(true);
-    } else {
-      setError('Invalid input. Use digits 0-8 exactly once (e.g., "208135467").');
-      setInputValid(false);
+    if (inputValid && customState.length === 9) {
+        setPuzzleState(customState);
+        setError(null);
+    }else{
+        setError('Invalid input. Use digits 0-8 exactly once (e.g., "208135467").');
     }
   };
 
   const handleInputChange = (e) => {
     const value = e.target.value;
     setCustomState(value);
-    if (/^[0-8]{9}$/.test(value) && new Set(value).size === 9) {
-      setInputValid(true);
-    } else {
-      setInputValid(false);
+
+    if(value.length === 0){
+        setInputValid(false);
+        setInputFeedback('Please enter a puzzle state.');
+    }else if(!/^[0-8]*$/.test(value)){
+        setInputValid(false);
+        setInputFeedback('Only digits 0-8 are allowed.');
+    }else if(value.length === 9){
+        const digitSet = new Set(value);
+        if(digitSet.size === 9){
+            setInputValid(true);
+            setInputFeedback('');
+        }else{
+            setInputValid(false);
+            setInputFeedback('Digits must be unique (0-8 used exactly once!). e.g., 208135467 ');
+        }
+    }else{
+        setInputValid(false);
+        setInputFeedback('Enter exactly 9 digits.');
     }
   };
 
@@ -157,7 +178,11 @@ function App() {
             className={inputValid ? 'valid' : 'invalid'}
           />
         </label>
-        <button onClick={handleCustomState}>Set State</button>
+        <button onClick={handleCustomState} disabled={!inputValid}>Set State</button>
+        <button onClick={handleRandomize}>Randomize</button>
+        <div className={`input-feedback ${inputValid ? 'valid' : 'invalid'}`}>
+            {inputFeedback}
+        </div>
       </div>
       <PuzzleGrid state={puzzleState} />
       <div className="solver-controls">
