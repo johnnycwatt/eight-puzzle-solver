@@ -6,6 +6,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import StatsModal from './StatsModal';
+import LearnModal from './LearnModal';
 
 const Panel = styled.div`
   margin: 20px;
@@ -82,6 +83,7 @@ function SolverPanel({ onSolve, solution, isSolving, hasStats }) {
   const [method, setMethod] = useState('uc');
   const [heuristic, setHeuristic] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLearnModalOpen, setIsLearnModalOpen] = useState(false);
 
   const handleShowStats = () => {
     console.log('Solution state before opening modal:', solution);
@@ -117,6 +119,13 @@ function SolverPanel({ onSolve, solution, isSolving, hasStats }) {
         <Button onClick={handleShowStats} disabled={!hasStats}>
           Stats
         </Button>
+        <Button onClick={() => setIsLearnModalOpen(true)}>
+          Learn
+        </Button>
+        <LearnModal
+          isOpen={isLearnModalOpen}
+          onClose={() => setIsLearnModalOpen(false)}
+        />
       </Panel>
         <StatsModal
           isOpen={isModalOpen}
